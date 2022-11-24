@@ -1,0 +1,101 @@
+basePath: /v1
+definitions:
+  models.CreateUser:
+    properties:
+      email:
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+    type: object
+  models.ErrorResponse:
+    properties:
+      error:
+        type: string
+    type: object
+  models.User:
+    properties:
+      access_token:
+        type: string
+      email:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      password:
+        type: string
+    type: object
+  models.VerifyUser:
+    properties:
+      email:
+        type: string
+      verification_code:
+        type: integer
+    type: object
+host: localhost:8000
+info:
+  contact: {}
+  description: This is a blog service api.
+  title: Swagger for blog api
+  version: "1.0"
+paths:
+  /auth/verify:
+    post:
+      consumes:
+      - application/json
+      description: Verify user
+      parameters:
+      - description: Verify
+        in: body
+        name: verify
+        required: true
+        schema:
+          $ref: '#/definitions/models.VerifyUser'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.User'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Verify user
+      tags:
+      - auth
+  /users/auth:
+    post:
+      consumes:
+      - application/json
+      description: Create a user
+      parameters:
+      - description: User
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/models.CreateUser'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.User'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Create a user
+      tags:
+      - auth
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
